@@ -1,10 +1,6 @@
 package com.example.opengl_testapplication
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.opengl.GLES20
-import android.opengl.GLUtils
-import androidx.core.graphics.scale
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -14,7 +10,7 @@ class MyGLUtils {
 
         //смещение от верхушки экрана т.к. 120 пикселей занимает
         //возвращение на предыдущую страницу
-        val topOffset = 120f
+        const val topOffset = 120f
 
         //функция генерации массива байтов из массива типа float
         //необходимо для аттрибутов угловых шейдеров

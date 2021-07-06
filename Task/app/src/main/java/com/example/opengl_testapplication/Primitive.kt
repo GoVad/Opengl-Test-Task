@@ -2,7 +2,7 @@ package com.example.opengl_testapplication
 
 import android.opengl.GLES20
 
-class Primitive (var coord:FloatArray, var color:FloatArray, var vertexCount:Int, var mode:Int){
+class Primitive (private var coord:FloatArray, var color:FloatArray, private var vertexCount:Int, private var mode:Int){
 
     //класс примитива имеет лишь один метод - нарисовать примитив
     fun draw(prog:Int,mvp:FloatArray)
@@ -11,8 +11,8 @@ class Primitive (var coord:FloatArray, var color:FloatArray, var vertexCount:Int
         GLES20.glUseProgram(prog)
 
         //установка указателей на аттрибуты
-        var vertexHandler = MyGLUtils.setAttribPointer(prog,"vPosition",3,coord)
-        var colorHandler = MyGLUtils.setAttribPointer(prog,"color",4,color)
+        val vertexHandler = MyGLUtils.setAttribPointer(prog,"vPosition",3,coord)
+        val colorHandler = MyGLUtils.setAttribPointer(prog,"color",4,color)
 
         //задаем юниформу для матрицы проекции
         GLES20.glGetUniformLocation(prog,"uMVPMatrix").also{

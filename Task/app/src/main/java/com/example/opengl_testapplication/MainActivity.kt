@@ -1,16 +1,18 @@
 package com.example.opengl_testapplication
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var gLView: MyGLSurfaceView
-    lateinit var t:Thread
+    private lateinit var t:Thread
 
     public override fun onResume() {
         super.onResume()
@@ -47,8 +49,7 @@ class MainActivity : AppCompatActivity() {
         t = Thread {
             while(true) {
                 if(enableRandom) {
-                    var a = Random.nextInt(7)
-                    when (a) {
+                    when (Random.nextInt(7)) {
                         0 -> gLView.changeBrightness(2f * Random.nextFloat())
                         1 -> gLView.changeScale(2f * Random.nextFloat())
                         2 -> gLView.changePos(Random.nextInt(-2, 2) * Random.nextFloat())
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         t.start()
 
         //прикрепляем обьект сцены к фрейму в активити
-        var frame = findViewById<FrameLayout>(R.id.myFrameLayout)
+        val frame = findViewById<FrameLayout>(R.id.myFrameLayout)
         frame.addView(gLView)
         //устанавливаем что сцена должна рисоваться снизу под всему Ui элементами
         gLView.setZOrderMediaOverlay(true)
@@ -83,6 +84,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("ResourceType", "SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createUi()
     {
@@ -109,7 +111,7 @@ class MainActivity : AppCompatActivity() {
                 }
             )
         }
-        var params = RelativeLayout.LayoutParams(width,height)
+        val params = RelativeLayout.LayoutParams(width,height)
         params.topMargin = topMargin
         addContentView(
             sb,params
@@ -197,6 +199,27 @@ class MainActivity : AppCompatActivity() {
         params.topMargin = topMargin
         addContentView(
             sb,params
+        )
+        //выводимое на активити текстовое поле
+        val tb = TextView(this).also {
+            it.text = "1 слайдер вращает фигуру\n2 слайдер меняет яркость\n" +
+                    "3 слайдер меняет размер фиугры\n4 слайдер двигает фигуру"
+        }
+        //параметры текстового поля
+        val textParams =
+            //заполнение по ширине и высоте контента
+            RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).also {
+                //отступ снизу 240 пикселей
+                it.topMargin = Resources.getSystem().displayMetrics.heightPixels-240
+                //отступ слева 10 пикселей
+                it.leftMargin = 10
+            }
+        //добавление текста на экран
+        addContentView(
+            tb,textParams
         )
     }
 }

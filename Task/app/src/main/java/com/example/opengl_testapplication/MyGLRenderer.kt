@@ -8,12 +8,12 @@ import javax.microedition.khronos.opengles.GL10
 import kotlin.random.Random
 
 
-class MyGLRenderer() : GLSurfaceView.Renderer {
+class MyGLRenderer : GLSurfaceView.Renderer {
 
     //текстуры прикрепляемые к фреймбуферам
     private var screenTex = IntArray(2)
     //фреймбуферы
-    private var FBO = IntArray(2)
+    private var fbo = IntArray(2)
 
     //матрица проекции
     private var vPMatrix = FloatArray(16)
@@ -85,11 +85,11 @@ class MyGLRenderer() : GLSurfaceView.Renderer {
         mPostRenderer.enableBright = true
 
         //генерируем 2 пары буфера+текстуры
-        GLES20.glGenFramebuffers(2,FBO,0)
+        GLES20.glGenFramebuffers(2,fbo,0)
         GLES20.glGenTextures(2,screenTex,0)
         //конфигурируем созданные фреймбуферы
-        createFrameBuffer(FBO[0],screenTex[0])
-        createFrameBuffer(FBO[1],screenTex[1])
+        createFrameBuffer(fbo[0],screenTex[0])
+        createFrameBuffer(fbo[1],screenTex[1])
     }
 
     //функция для создания фреймбуфера, для создания нужен id текстуры и id буфера
@@ -152,7 +152,7 @@ class MyGLRenderer() : GLSurfaceView.Renderer {
     //стандартная функция отрисовки фрейма
     override fun onDrawFrame(unused: GL10) {
         //подключаем буфер постобработки
-        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER,FBO[0])
+        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER,fbo[0])
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
         //рисуем основную сцену
         drawScene()
@@ -172,7 +172,7 @@ class MyGLRenderer() : GLSurfaceView.Renderer {
     //принимает координаты пикселя для проверки на цвет
     private fun colorPicking(x:Int,y:Int) {
         //подключаем фреймбуфер хранящий текстуру для пикинга
-        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER,FBO[1])
+        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER,fbo[1])
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
 
         //сохранаяем изначальные цвета фигур
@@ -198,7 +198,7 @@ class MyGLRenderer() : GLSurfaceView.Renderer {
         mPrimitiveBack.color = backColor
 
         //выделяем память буферу с цветом пикселя
-        var buffer = ByteBuffer.allocate(
+        val buffer = ByteBuffer.allocate(
             4
         )
         //считываем пиксель из буфера
@@ -227,13 +227,6 @@ class MyGLRenderer() : GLSurfaceView.Renderer {
         GLES20.glViewport(0, 0, width, height)
         val ratio: Float = width.toFloat() / height.toFloat()
         Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1f, 1f, 3f, 7f)
-    }
-
-    //функция для включения пикинга при нажатии на переднюю фигуру
-    fun changeTriangleColor(mousePos: FloatArray)
-    {
-        mouseCoord = mousePos
-
     }
 
 }

@@ -2,7 +2,6 @@ package com.example.opengl_testapplication
 
 import android.content.res.Resources
 import android.opengl.GLES20
-import android.opengl.GLUtils
 
 class PostRender {
 
@@ -107,8 +106,8 @@ class PostRender {
     //функция пострендеринга
     fun postRender(screenTex:Int,texUnit:Int) {
         //создаем хендлеры указателей
-        var vertHand = MyGLUtils.setAttribPointer(prog,"vPosition",2,fullscreenCoords)
-        var texCoordHand = MyGLUtils.setAttribPointer(prog,"texCoord",2,texCoords)
+        val vertHand = MyGLUtils.setAttribPointer(prog,"vPosition",2,fullscreenCoords)
+        val texCoordHand = MyGLUtils.setAttribPointer(prog,"texCoord",2,texCoords)
 
         //указываем используемую программу
         GLES20.glUseProgram(prog)

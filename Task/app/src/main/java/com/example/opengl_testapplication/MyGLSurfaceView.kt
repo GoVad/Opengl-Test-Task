@@ -3,9 +3,6 @@ package  com.example.opengl_testapplication
 import android.content.Context
 import android.content.res.Resources
 import android.opengl.GLSurfaceView
-import kotlin.concurrent.thread
-import kotlin.coroutines.*
-import kotlin.random.Random
 
 class MyGLSurfaceView(context: Context) : GLSurfaceView(context) {
 
@@ -20,12 +17,12 @@ class MyGLSurfaceView(context: Context) : GLSurfaceView(context) {
     }
     //функция для включения/выключения эффекта блюра
     fun flipBlur() {
-        var postRenderer = renderer.getmPostRenderer()
+        val postRenderer = renderer.getmPostRenderer()
         postRenderer.enableBlur=!postRenderer.enableBlur
     }
     //функция для включения/выключения эффекта виньетки
     fun flipVign() {
-        var postRenderer = renderer.getmPostRenderer()
+        val postRenderer = renderer.getmPostRenderer()
         postRenderer.enableVign=!postRenderer.enableVign
     }
     //функция для вращения треугольника на определенный угол по оси Z
