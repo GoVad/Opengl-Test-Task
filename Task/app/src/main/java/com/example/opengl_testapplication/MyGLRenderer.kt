@@ -14,10 +14,6 @@ class MyGLRenderer() : GLSurfaceView.Renderer {
     private var screenTex = IntArray(2)
     //фреймбуферы
     private var FBO = IntArray(2)
-    //переменная разрешения пикинга
-    private var enablePicking = false
-    //координаты мышки на текстуре
-    private var mouseCoord = FloatArray(2)
 
     //матрица проекции
     private var vPMatrix = FloatArray(16)
@@ -36,8 +32,12 @@ class MyGLRenderer() : GLSurfaceView.Renderer {
     private lateinit var programs:ProgramClass
 
     var angle = 0f
-
     var scale = 1f
+    var xOffset = 0f
+    //переменная разрешения пикинга
+    var enablePicking = false
+    //координаты мышки на текстуре
+    var mouseCoord = FloatArray(2)
 
     //геттер пострендера
     fun getmPostRenderer(): PostRender {
@@ -139,10 +139,12 @@ class MyGLRenderer() : GLSurfaceView.Renderer {
 
         //редактируем проекцию для примитива на переднем фоне
         triangleVMatrix = vPMatrix.copyOf()
-        //задаем матрицу угол поворота по оси Z
-        Matrix.rotateM(triangleVMatrix,0,angle,0f,0f,1f)
         //увеличиваем проекцию согласно выбранному значению scale
         Matrix.scaleM(triangleVMatrix,0,scale,scale,scale)
+        //Передвижение матрицы проекции на значение отступа xOffset
+        Matrix.translateM(triangleVMatrix,0,xOffset,0f,0f)
+        //задаем матрицу угол поворота по оси Z
+        Matrix.rotateM(triangleVMatrix,0,angle,0f,0f,1f)
         //рисуем передний примитив
         mPrimitiveFront.draw(programs.simpleColorProgram,triangleVMatrix)
     }
@@ -231,7 +233,7 @@ class MyGLRenderer() : GLSurfaceView.Renderer {
     fun changeTriangleColor(mousePos: FloatArray)
     {
         mouseCoord = mousePos
-        enablePicking = true
+
     }
 
 }
